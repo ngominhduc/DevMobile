@@ -11,6 +11,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ShowListPageModule } from '../pages/show-list/show-list.module';
+import { ItemProvider } from '../providers/item/item';
+import { ListProvider } from '../providers/list/list';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { ShowListPageModule } from '../pages/show-list/show-list.module';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ItemProvider,
+    ListProvider
   ]
 })
 export class AppModule {}
