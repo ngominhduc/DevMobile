@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { TodoItem } from '../../model/TodoItem';
 import { dataList } from '../../model/dataList';
 import { TodoList } from '../../model/TodoList';
+import { ItemModalPage } from '../item-modal/item-modal';
 
 /**
  * Generated class for the ShowListPage page.
@@ -22,7 +23,7 @@ export class ShowListPage {
   uuid:string;
   items: TodoItem[];
   name:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
     this.uuid = navParams.get('uuid');
     this.name = dataList.find(list => list.uuid === this.uuid).name;
     this.items = dataList.find(list => list.uuid === this.uuid).items;
@@ -33,4 +34,33 @@ export class ShowListPage {
     console.log('ionViewDidLoad ShowListPage');
   }
 
+  addItem(){
+    this.addModal();
+    console.log('add modal');
+  }
+
+  addModal() {
+    const modal = this.modalCtrl.create('ItemModalPage');
+    modal.present();
+    modal.onDidDismiss(data => {
+      this.items.unshift(data);
+      console.log('add'+ data);
+    });
+  }
+
+  updateModal(item) {
+    const modal = this.modalCtrl.create('ItemModalPage',{item: item});
+    modal.present();
+    modal.onDidDismiss(data => {
+      const index = this.items.findIndex(it => it.uuid === item.uuid);
+      this.items[index] = data;
+      console.log('update'+ data);
+    });
+  }
+
+  delete(item){
+    const index = this.items.findIndex(it => it.uuid === item.uuid);
+    this.items.splice(item, 1);
+    console.log('delete');
+  }
 }

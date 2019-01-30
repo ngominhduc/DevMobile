@@ -10,7 +10,7 @@
     <ion-item-sliding *ngFor="let list of data">
       <ion-item (click)="listSelected(list.uuid)">
         <ion-icon name="document"></ion-icon>
-         {{ list.name }}
+         {{ list.name }} : {{ list.uuid }}
       </ion-item>
       <ion-item-options side="left">
         <button ion-button color="danger" (click)="deleteList(list.uuid)">

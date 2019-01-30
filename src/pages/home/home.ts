@@ -45,6 +45,10 @@ export class HomePage {
           name: 'name',
           placeholder: 'nom'
         },
+        {
+          name: 'uuid',
+          placeholder: 'uuid'
+        }
       ],
       buttons: [
         {
@@ -56,7 +60,7 @@ export class HomePage {
         {
           text: 'Ok',
           handler: data => {
-            this.data.push({uuid: "dedede", name: data.name, items: []})
+            this.data.push({uuid: data.uuid, name: data.name, items: []})
           }
         }
       ]
@@ -73,8 +77,7 @@ export class HomePage {
           text: 'Annuler',
           role: 'cancel',
           handler: () => {
-            const index = this.data.findIndex(list => list.uuid === uuid);
-            this.data.splice(index, 1);
+            console.log('Cancel delete');
           }
         },
         {
