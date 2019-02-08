@@ -7,7 +7,7 @@
 <ion-content padding>
 
 <ion-list>
-    <ion-item-sliding *ngFor="let list of data">
+    <ion-item-sliding *ngFor="let list of data | async">
       <ion-item (click)="listSelected(list.uuid)">
         <ion-icon name="document"></ion-icon>
          {{ list.name }} : {{ list.uuid }}
@@ -33,6 +33,4 @@
   <ion-fab right bottom>
     <button ion-fab (click)="addList()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
-
-
 </ion-content>

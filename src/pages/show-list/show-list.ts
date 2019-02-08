@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { TodoItem } from '../../model/TodoItem';
 import { dataList } from '../../model/dataList';
-import { TodoList } from '../../model/TodoList';
-import { ItemModalPage } from '../item-modal/item-modal';
 
 /**
  * Generated class for the ShowListPage page.
@@ -60,7 +58,7 @@ export class ShowListPage {
 
   delete(item){
     const index = this.items.findIndex(it => it.uuid === item.uuid);
-    this.items.splice(item, 1);
+    this.items.splice(index, 1);
     console.log('delete');
   }
 }

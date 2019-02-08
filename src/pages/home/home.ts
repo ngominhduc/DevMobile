@@ -3,6 +3,8 @@ import { NavController, AlertController } from 'ionic-angular';
 import { TodoList } from '../../model/TodoList';
 import { dataList } from '../../model/dataList';
 import { ShowListPage } from '../show-list/show-list';
+import { ListProvider } from '../../providers/list/list';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'page-home',
@@ -10,10 +12,12 @@ import { ShowListPage } from '../show-list/show-list';
 })
 export class HomePage {
 
-  data:TodoList[] = dataList;
+  data:Observable<TodoList[]>;
 
-  constructor(public navCtrl: NavController,public alertCtrl: AlertController) {
-    
+  constructor(public navCtrl: NavController,public alertCtrl: AlertController, public listProvider: ListProvider) {
+    this.data = this.listProvider.getList();
+    console.log(' data '+ JSON.stringify(this.data));
+    console.log(this.data);
   }
 
   listSelected(uuid: string){
@@ -60,7 +64,8 @@ export class HomePage {
         {
           text: 'Ok',
           handler: data => {
-            this.data.push({uuid: data.uuid, name: data.name, items: []})
+            //this.data.push({uuid: data.uuid, name: data.name, items: []})
+            this.listProvider.insertList(data);
           }
         }
       ]
@@ -83,8 +88,8 @@ export class HomePage {
         {
           text: 'Yes',
           handler: () => {
-            const index = this.data.findIndex(list => list.uuid === uuid);
-            this.data.splice(index, 1);
+           /* const index = this.data.findIndex(list => list.uuid === uuid);
+            this.data.splice(index, 1);*/
           }
         }
       ]
@@ -112,9 +117,9 @@ export class HomePage {
         {
           text: 'Ok',
           handler: data => {
-            const index = this.data.findIndex(list => list.uuid === uuid);
+            /*const index = this.data.findIndex(list => list.uuid === uuid);
             console.log('index '+index);
-            this.data[index].name = data.name;
+            this.data[index].name = data.name;*/
           }
         }
       ]

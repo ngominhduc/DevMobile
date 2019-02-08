@@ -13,6 +13,23 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ShowListPageModule } from '../pages/show-list/show-list.module';
 import { ItemProvider } from '../providers/item/item';
 import { ListProvider } from '../providers/list/list';
+import { LoginPageModule } from '../pages/login/login.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpModule } from '@angular/http';
+import { AngularFirestoreModule, FirestoreSettingsToken } from 'angularfire2/firestore';
+
+const firebaseConfig = {
+  fire :{
+    apiKey: 'AIzaSyCLeQxZ78r5AzywGZU7Hlpj-VoRZgQHR6Y',
+    authDomain: 'tpdm-c2652.firebaseapp.com',
+    databaseURL: 'https://tpdm-c2652.firebaseio.com/',
+    projectId: 'tpdm-c2652',
+    storageBucket: 'tpdm-c2652.appspot.com'
+  }
+}
 
 @NgModule({
   declarations: [
@@ -25,7 +42,13 @@ import { ListProvider } from '../providers/list/list';
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    ShowListPageModule
+    ShowListPageModule,
+    AngularFireModule.initializeApp(firebaseConfig.fire),
+    AngularFirestoreModule.enablePersistence(), 
+    AngularFireAuthModule,
+    LoginPageModule,
+    HttpModule,
+    HttpClientModule  
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -36,11 +59,13 @@ import { ListProvider } from '../providers/list/list';
     TabsPage
   ],
   providers: [
+    GooglePlus,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ItemProvider,
-    ListProvider
+    ListProvider,
+    { provide: FirestoreSettingsToken, useValue: {} } 
   ]
 })
 export class AppModule {}
