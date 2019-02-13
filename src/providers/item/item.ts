@@ -1,6 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { Observable } from 'rxjs';
 import {TodoItem} from "../../model/TodoItem";
+import { TodoList } from '../../model/TodoList';
 /*
   Generated class for the ItemProvider provider.
 
@@ -10,11 +13,32 @@ import {TodoItem} from "../../model/TodoItem";
 @Injectable()
 export class ItemProvider {
 
-  constructor(public http: HttpClient) {
-    console.log('Hello ItemProvider Provider');
+  todoCollectionRef: AngularFirestoreCollection<TodoItem>;
+  todoItem: Observable<TodoItem[]>;
+
+  constructor(public http: HttpClient, public angularFire: AngularFirestore) {
   }
 
-  insertItem(listUUID:string,item:TodoItem) {}
-  updateItem(uuid: string, item:TodoItem){}
-  deleteItem(uuid: string){}
+  getItemsList(listUUID: string) {
+    this.todoCollectionRef = this.angularFire.collection<TodoItem>('lists/'+listUUID+'/items');
+    return this.todoCollectionRef.valueChanges();
+  };
+  insertItem(listUUID:string,item:TodoItem) {
+    this.todoCollectionRef.doc(item.uuid).set(item);;
+  }
+  updateItem(uuid : string, item : TodoItem){
+    console.log('change id' + item.uuid);
+    console.log('change name' + item.name);
+    this.todoCollectionRef.doc(uuid).update({
+      "name" : item.name,
+      "desc" : item.desc,
+      "complete" : item.complete
+    });
+    console.log('item change complete' + item.uuid);
+  }
+
+  deleteItem(uuid: string){
+    console.log(uuid);
+    this.todoCollectionRef.doc(uuid).delete();
+  }
 }

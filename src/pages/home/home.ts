@@ -30,9 +30,9 @@ export class HomePage {
     this.addList();
   }
   
-  deleteList(uuid) {
+  deleteList(list: TodoList) {
     console.log('delete');
-    this.deleteConfirm(uuid);
+    this.deleteConfirm(list);
   }
 
   updateList(uuid){
@@ -73,7 +73,7 @@ export class HomePage {
     prompt.present();
   }
 
-  deleteConfirm(uuid: any): any {
+  deleteConfirm(list: TodoList): any {
     let alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Voulez-vous vraiment supprimer cette liste?',
@@ -90,6 +90,7 @@ export class HomePage {
           handler: () => {
            /* const index = this.data.findIndex(list => list.uuid === uuid);
             this.data.splice(index, 1);*/
+            this.listProvider.deleteList(list);
           }
         }
       ]
@@ -120,6 +121,8 @@ export class HomePage {
             /*const index = this.data.findIndex(list => list.uuid === uuid);
             console.log('index '+index);
             this.data[index].name = data.name;*/
+            this.listProvider.updateList(uuid, data.name);
+            console.log(uuid, data.name);
           }
         }
       ]

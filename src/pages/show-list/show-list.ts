@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { TodoItem } from '../../model/TodoItem';
 import { dataList } from '../../model/dataList';
+import { ItemProvider } from '../../providers/item/item';
+import { Observable } from 'rxjs';
 
 /**
  * Generated class for the ShowListPage page.
@@ -19,17 +21,19 @@ import { dataList } from '../../model/dataList';
 export class ShowListPage {
 
   uuid:string;
-  items: TodoItem[];
+  items:Observable<TodoItem[]>;
   name:string;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public itemProvider: ItemProvider) {
     this.uuid = navParams.get('uuid');
-    this.name = dataList.find(list => list.uuid === this.uuid).name;
-    this.items = dataList.find(list => list.uuid === this.uuid).items;
-   console.log(' items list '+JSON.stringify(this.items));
+    this.getListItems(this.uuid);
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ShowListPage');
+  }
+
+  getListItems(listUUID: string) {
+    this.items = this.itemProvider.getItemsList(listUUID);
   }
 
   addItem(){
@@ -41,7 +45,8 @@ export class ShowListPage {
     const modal = this.modalCtrl.create('ItemModalPage');
     modal.present();
     modal.onDidDismiss(data => {
-      this.items.unshift(data);
+      //this.items.unshift(data);
+      this.itemProvider.insertItem(this.uuid,data);
       console.log('add'+ data);
     });
   }
@@ -50,15 +55,17 @@ export class ShowListPage {
     const modal = this.modalCtrl.create('ItemModalPage',{item: item});
     modal.present();
     modal.onDidDismiss(data => {
-      const index = this.items.findIndex(it => it.uuid === item.uuid);
-      this.items[index] = data;
-      console.log('update'+ data);
+      //const index = this.items.findIndex(it => it.uuid === item.uuid);
+      //this.items[index] = data;
+      console.log('update'+ item.uuid);
+      this.itemProvider.updateItem(item.uuid, data);
     });
   }
 
-  delete(item){
-    const index = this.items.findIndex(it => it.uuid === item.uuid);
-    this.items.splice(index, 1);
-    console.log('delete');
+  delete(uuid){
+   /* const index = this.items.findIndex(it => it.uuid === item.uuid);
+    this.items.splice(index, 1);*/
+    console.log('delete = ' +uuid);
+    this.itemProvider.deleteItem(uuid);
   }
 }

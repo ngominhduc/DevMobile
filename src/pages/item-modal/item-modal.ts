@@ -15,9 +15,10 @@ import { TodoItem } from '../../model/TodoItem';
   templateUrl: 'item-modal.html',
 })
 export class ItemModalPage {
-  todo: TodoItem = {uuid: "test", name: "test", desc: "", complete:false};
+  todo: TodoItem = {uuid: "", name: "", desc: "", complete:false};
   constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl: ViewController) {
     //this.todo = this.navParams.get();
+    console.log(navParams);
   }
 
   ionViewDidLoad() {

@@ -15,21 +15,21 @@
 <ion-content padding>
   <ion-card class="item-title">
     <ion-card-header>
-      <h1>  {{ name }} {{ uuid }} </h1>
+      <h1>  {{ uuid }} </h1>
     </ion-card-header>
     <ion-card-content>
     </ion-card-content>
   </ion-card>
-  <ion-card *ngFor="let item of items">
+  <ion-card *ngFor="let item of items | async">
     <ion-card-header>
       Task
       <ion-item>
-        <button class="danger" (click)="delete(item)"> Supprimer </button>
+        <button class="danger" (click)="delete(item.uuid)"> Supprimer </button>
         <button class="primary" (click)="updateModal(item)"> Modifier</button>
       </ion-item>
     </ion-card-header>
     <ion-card-content>
-      <p>Nom : {{ item.name }}</p>
+      <p>Nom : {{ item.name }} </p>
       <p>Description : {{ item.desc }}</p>
       <p> Etat : {{ item.complete }}</p>
     </ion-card-content>

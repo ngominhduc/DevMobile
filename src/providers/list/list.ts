@@ -14,20 +14,34 @@ import { Observable } from 'rxjs';
 export class ListProvider {
   todoCollectionRef: AngularFirestoreCollection<TodoList>;
   todo: Observable<TodoList[]>;
+  list: Observable<TodoList[]>;
 
   constructor(public http: HttpClient, public angularFire: AngularFirestore) {
    this.todoCollectionRef = this.angularFire.collection<TodoList>('lists');
    this.todo = this.todoCollectionRef.valueChanges();
+  
   }
 
   getList() {
+    this.todo.forEach(todo => {
+    });
     return this.todo;
   }
 
   insertList(list: TodoList){
-      this.todoCollectionRef.add(list);
+      this.todoCollectionRef.doc(list.uuid).set(list);
   }
 
-  updateList(uuid: string, name: string) {}
-  deleteList(uuid: string) {}
+  updateList(uuid: string, name: string) {
+    console.log(uuid, name);
+    this.todoCollectionRef.doc(uuid).update({
+      "name" : name,
+    });
+  }
+
+  deleteList(list: TodoList) {
+    console.log(list.uuid);
+    this.todoCollectionRef.doc(list.uuid).delete();
+    console.log('delete sucess');
+  }
 }

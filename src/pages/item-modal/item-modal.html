@@ -15,8 +15,12 @@
 
 <ion-content padding>
     <form>
+        <ion-item>
+            <ion-label>ID</ion-label>
+            <ion-input type="text" [(ngModel)]="todo.uuid" name="uuid"></ion-input>
+          </ion-item>
       <ion-item>
-        <ion-label>Todo</ion-label>
+        <ion-label>name</ion-label>
         <ion-input type="text" [(ngModel)]="todo.name" name="name"></ion-input>
       </ion-item>
       <ion-item>
