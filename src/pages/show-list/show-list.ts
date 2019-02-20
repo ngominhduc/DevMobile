@@ -20,12 +20,13 @@ import { Observable } from 'rxjs';
 
 export class ShowListPage {
 
-  uuid:string;
+  id:string;
   items:Observable<TodoItem[]>;
   name:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public itemProvider: ItemProvider) {
-    this.uuid = navParams.get('uuid');
-    this.getListItems(this.uuid);
+    this.id = navParams.get('id');
+    console.log("item seltected "+this.id);
+    this.getListItems(this.id);
   }
 
   ionViewDidLoad() {
@@ -46,19 +47,20 @@ export class ShowListPage {
     modal.present();
     modal.onDidDismiss(data => {
       //this.items.unshift(data);
-      this.itemProvider.insertItem(this.uuid,data);
+      this.itemProvider.insertItem(this.id,data);
       console.log('add'+ data);
     });
   }
 
-  updateModal(item) {
+  updateModal(id : any, item) {
+    console.log("update item id" + id);
     const modal = this.modalCtrl.create('ItemModalPage',{item: item});
     modal.present();
     modal.onDidDismiss(data => {
       //const index = this.items.findIndex(it => it.uuid === item.uuid);
       //this.items[index] = data;
-      console.log('update'+ item.uuid);
-      this.itemProvider.updateItem(item.uuid, data);
+      console.log('update'+ id);
+      this.itemProvider.updateItem(id, data);
     });
   }
 

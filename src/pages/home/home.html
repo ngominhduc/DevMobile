@@ -8,22 +8,22 @@
 
 <ion-list>
     <ion-item-sliding *ngFor="let list of data | async">
-      <ion-item (click)="listSelected(list.uuid)">
+      <ion-item (click)="listSelected(list.id)">
         <ion-icon name="document"></ion-icon>
-         {{ list.name }} : {{ list.uuid }}
+         {{ list.name }} 
       </ion-item>
       <ion-item-options side="left">
-        <button ion-button color="danger" (click)="deleteList(list)">
+        <button ion-button color="danger" (click)="deleteList(list.id)">
           <ion-icon name="trash"></ion-icon>
           Supprimer
         </button>
-        <button ion-button color="secondary" (click)="updateList(list.uuid)">
+        <button ion-button color="secondary" (click)="updateList(list.id)">
           <ion-icon name="create"></ion-icon>
           Modifier
         </button>
       </ion-item-options>
       <ion-item-options side="right">
-        <button ion-button color="primary" (click)="listSelected(list.uuid)">
+        <button ion-button color="primary" (click)="listSelected(list.id)">
           <ion-icon name="menu"></ion-icon>
           Tasks
         </button>

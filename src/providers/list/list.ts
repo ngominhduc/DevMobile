@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { TodoList } from '../../model/TodoList';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { listLazyRoutes } from '@angular/compiler/src/aot/lazy_routes';
 
 /*
   Generated class for the ListProvider provider.
@@ -18,30 +20,34 @@ export class ListProvider {
 
   constructor(public http: HttpClient, public angularFire: AngularFirestore) {
    this.todoCollectionRef = this.angularFire.collection<TodoList>('lists');
-   this.todo = this.todoCollectionRef.valueChanges();
-  
+   //this.todo = this.todoCollectionRef.valueChanges();
+   this.list = this.todoCollectionRef.snapshotChanges().pipe(
+     map(actions => actions.map(a => {
+      const data = a.payload.doc.data() as TodoList;
+      const id = a.payload.doc.id;
+      return { id, ...data };
+     }))
+   )
   }
 
   getList() {
-    this.todo.forEach(todo => {
-    });
-    return this.todo;
+    return this.list;
   }
 
   insertList(list: TodoList){
-      this.todoCollectionRef.doc(list.uuid).set(list);
+      this.todoCollectionRef.add(list).then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    });
   }
 
-  updateList(uuid: string, name: string) {
-    console.log(uuid, name);
-    this.todoCollectionRef.doc(uuid).update({
+  updateList(id: any, name: string) {
+    this.todoCollectionRef.doc(id).update({
       "name" : name,
     });
   }
 
-  deleteList(list: TodoList) {
-    console.log(list.uuid);
-    this.todoCollectionRef.doc(list.uuid).delete();
-    console.log('delete sucess');
+  deleteList(id: any) {
+    this.todoCollectionRef.doc(id).delete();
+    console.log('delete sucess list with id ' + id);
   }
 }

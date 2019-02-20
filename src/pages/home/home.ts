@@ -20,24 +20,24 @@ export class HomePage {
     console.log(this.data);
   }
 
-  listSelected(uuid: string){
-    console.log('id'+uuid);
-    this.navCtrl.push(ShowListPage,{uuid:uuid})
-    return null;
+  listSelected(id: any){
+    console.log('select'+id);
+    this.navCtrl.push(ShowListPage,{id:id})
+    console.log('select done');
   }
 
   addNewList(){
     this.addList();
   }
   
-  deleteList(list: TodoList) {
+  deleteList(id: any) {
     console.log('delete');
-    this.deleteConfirm(list);
+    this.deleteConfirm(id);
   }
 
-  updateList(uuid){
-    console.log('update');
-    this.update(uuid);
+  updateList(id:any){
+    console.log('update' + id);
+    this.update(id);
 }
 
   addList(): any {
@@ -73,7 +73,7 @@ export class HomePage {
     prompt.present();
   }
 
-  deleteConfirm(list: TodoList): any {
+  deleteConfirm(id:any): any {
     let alert = this.alertCtrl.create({
       title: 'Confirmation',
       message: 'Voulez-vous vraiment supprimer cette liste?',
@@ -90,7 +90,7 @@ export class HomePage {
           handler: () => {
            /* const index = this.data.findIndex(list => list.uuid === uuid);
             this.data.splice(index, 1);*/
-            this.listProvider.deleteList(list);
+            this.listProvider.deleteList(id);
           }
         }
       ]
@@ -98,7 +98,7 @@ export class HomePage {
     alert.present();
   }
   
-  update(uuid) {
+  update(id:any) {
     const prompt = this.alertCtrl.create({
       title: 'Modifier une liste',
       message: "Entrez le nom de la liste",
@@ -121,8 +121,8 @@ export class HomePage {
             /*const index = this.data.findIndex(list => list.uuid === uuid);
             console.log('index '+index);
             this.data[index].name = data.name;*/
-            this.listProvider.updateList(uuid, data.name);
-            console.log(uuid, data.name);
+            this.listProvider.updateList(id, data.name);
+            console.log('list with id : ' + id + "  " +  'change data to: ' + data.name);
           }
         }
       ]

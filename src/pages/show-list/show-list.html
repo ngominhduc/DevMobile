@@ -24,8 +24,8 @@
     <ion-card-header>
       Task
       <ion-item>
-        <button class="danger" (click)="delete(item.uuid)"> Supprimer </button>
-        <button class="primary" (click)="updateModal(item)"> Modifier</button>
+        <button class="danger" (click)="delete(item.id)"> Supprimer </button>
+        <button class="primary" (click)="updateModal(item.id, item)"> Modifier</button>
       </ion-item>
     </ion-card-header>
     <ion-card-content>
